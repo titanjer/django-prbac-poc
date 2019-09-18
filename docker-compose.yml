@@ -1,0 +1,45 @@
+version: '3'
+
+services: 
+  
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - 5432
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+  app:
+    build: ./app
+    image: django-rbac-poc/app
+    volumes: 
+      - ./app/src:/app
+      - static:/static
+      - media:/media
+    ports:
+      - 8000
+    depends_on: 
+      - postgres
+  
+  nginx:
+    build: ./nginx/
+    image: django-rbac-poc/nginx
+    restart: always
+    volumes: 
+      - static:/static
+      - media:/media
+    ports: 
+      - 80:80
+    depends_on: 
+      - app
+
+volumes: 
+  pgdata:
+  media:
+  static:  
