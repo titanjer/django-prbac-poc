@@ -2,6 +2,8 @@ FROM python:3.6
 
 ENV PYTHONUNBUFFERED 1
 
+RUN mkdir -p /app /data/static /data/media
+
 WORKDIR /app
 
 COPY requirements.txt .
@@ -10,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
 
 COPY src .
 
-RUN chown -R nobody:nogroup /app
+RUN chown -R nobody:nogroup /app /data
 
 ENV DJANGO_SETTINGS_MODULE=poc_prbac.settings
 ENV UWSGI_WSGI_FILE=poc_prbac/wsgi.py \

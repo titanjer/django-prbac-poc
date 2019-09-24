@@ -20,8 +20,8 @@ services:
     image: django-rbac-poc/app
     volumes: 
       - ./app/src:/app
-      - static:/static
-      - media:/media
+      - static:/data/static:rw
+      - media:/data/media:rw
     ports:
       - 8000
     depends_on: 
@@ -32,8 +32,8 @@ services:
     image: django-rbac-poc/nginx
     restart: always
     volumes: 
-      - static:/static
-      - media:/media
+      - static:/static:ro
+      - media:/media:ro
     ports: 
       - 80:80
     depends_on: 
